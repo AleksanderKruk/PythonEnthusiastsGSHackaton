@@ -21,7 +21,7 @@ class Challenge:
         self.content = content
         self.difficulty = difficulty
 
-    def insert(self, database, id: int, name: str, content: str, difficulty: Difficulty):
+    def insert(self, database):
         database.execute(
             "INSERT INTO =?s (id, name, content, difficulty) VALUES(=?, =?, =?, =?);",
             (self.__class__.__name__, self.id, self.name, self.content, self.difficulty.value)
