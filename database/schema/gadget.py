@@ -38,7 +38,3 @@ class Gadgets:
         cond = f'WHERE {cond}' if condition is not None else ''
 
         return f'UPDATE GADGETS SET {column1} {column2} {column3} {column4} {cond}'
-
-gad = Gadgets(1, "nazwa", 20, "ok")
-print(gad.insert(10, "ok"))
-print(gad.update(20, "nazwa"))
