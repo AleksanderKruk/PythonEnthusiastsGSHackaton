@@ -64,8 +64,10 @@ async def get_home(request: Request):
 
     if res is None:
         return RedirectResponse('/login', status_code=303)
+    user_score = res[4]
 
-    return templates.TemplateResponse("home.html", {"request": request, "id": id, "content": challenges})
+    return templates.TemplateResponse("home.html", {"request": request, "id": id, "content": challenges, 'score': user_score})
+
 
 @app.get('/challenge/{id}')
 async def get_challenge(id: str, request: Request):

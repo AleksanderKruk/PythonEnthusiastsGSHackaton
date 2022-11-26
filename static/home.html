@@ -3,18 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>LeetSachs - Homepage</title>
-  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="static/s.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div class="home-page">
-   <h1>Welcome to our page</h1>
-    {% for i in content %}
-        <div><a href="/challenge/{{i[0]}}">{{ i[1] }}</a></div>
-    {% endfor %}
-</div>
+    <div class="home">
+   <h1><b>Browse available challenges</b></h1>
+        <hr>
+        <br>
+        {% for i in content %}
+            <li style="padding: 5px; right: 10px; font-size: 20px"><div><a href="/challenge/{{i[0]}}">{{ i[1] }}</a></div></li>
+        {% endfor %}
+
+<!--        <div class="container" style="float: right; display: inline; padding: 10px; width: 30%; height: 1% ; font-size: 10px; font-weight: bold">-->
+<div class="rightSideDiv" style="float: right; position: absolute; bottom: -60px; right: 20px; padding: -10px; display: inline-block; height: 100% ; font-size: 25px; font-weight: bold"> User Score: {{score}}</div>
+    <div class="rightSideDiv" style="float: right; position: absolute; bottom: -25px; right: 20px; padding: -10px; display: inline-block; height: 100% ; font-size: 25px; font-weight: normal"> <a href="/leaderboard">View leaderboards -></a></div>
+
+    </div>
+
 <!-- partial -->
+    </div>
   <script  src="static/script.js"></script>
 
 </body>

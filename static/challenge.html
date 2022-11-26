@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>LeetSachs - Solve Challenge</title>
-  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/s.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div class="challenge-page">
-   <div><h2>{{challenge[1]}} (Difficulty {{challenge[3]}})</h2></div>
-    <div>
+<div class="home">
+   <div style="font-size:35px"><h2>{{challenge[1]}} (Difficulty {{challenge[3]}})</h2></div>
+    <hr><br>
+    <div style="font-size: 20px">
         <b>Task: </b> <i>{{challenge[2]}}</i>
     </div>
+    <br> <br> <br> <br> <br><br>
     <div>
         <form id="solution" class="solution-form" method="post">
-            <div>
-            <textarea rows = "5" cols = "60" name = "submission"> </textarea>
-            </div>
-            <button type="submit">Submit</button>
+            <div></div>
+            <h4>Write your solution below:</h4>
+            <label>
+                <textarea rows = "20" cols = "60" name = "submission"> </textarea>
+            </label>
+            <!--            <input type="text" placeholder="..." name="submission" style="font-size: 12pt; height: 200px; width:560px"/>-->
+            <div></div>
+            <button type="submit" style="position: absolute; left: 23.5%">Submit</button>
         </form>
     </div>
 </div>
