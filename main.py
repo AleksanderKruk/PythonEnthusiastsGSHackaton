@@ -55,9 +55,13 @@ async def get_home(request: Request):
     print(f'From /home {token}')
     res = user_utility.validate_token(token, conn)
     print(res)
+    q = 'SELECT * FROM challenges'
+    challenges = conn.execute(q).fetchall() or [(1, 'lol'), (2, 'lmao')]
+
     if res is None:
         return RedirectResponse('/login', status_code=303)
-    return templates.TemplateResponse("home.html", {"request": request, "id": id})
+
+    return templates.TemplateResponse("home.html", {"request": request, "id": id, "content": challenges})
 
 
 if __name__ == '__main__':
