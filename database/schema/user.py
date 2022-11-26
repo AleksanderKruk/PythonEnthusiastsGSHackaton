@@ -4,24 +4,14 @@ from badge import Badge
 import sqlite3 as sql
 
 
-class user(BaseModel):
-    def __init__(
-            self,
-            nick: str,
-            email: str,
-            password: str,
-            points: int = 0,
-            address: str = None,
-            phone_number: str = None,
-            id: uuid.UUID = None,
-    ):
-        self.id = id or uuid.uuid4()
-        self.nick = nick
-        self.email = email
-        self.password = password
-        self.points = points
-        self.address = address
-        self.phone_number = phone_number
+class User(BaseModel):
+    nick: str
+    email: str
+    password: str
+    points: int = 0
+    address: str = None
+    phone_number: str = None
+    id: uuid.UUID = None
 
     def insert(self):
         query = "INSERT INTO " \
