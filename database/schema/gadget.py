@@ -21,7 +21,7 @@ class Gadgets:
         )
 
 
-    def delete(self, condition: str):
+    def delete(self):
         sql.connect("database\gs.db").execute(
             "DELETE FROM ? WHERE id = ?;", (self.__class__.__name__, self.id)
         )
