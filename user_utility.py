@@ -1,26 +1,36 @@
 from database.schema.user import User
-import sqlite3 as sql
+from database.schema.submission import Submission
+from datetime import datetime
 import uuid
 
 
-def register(nick, email, password):
-    is_taken = is_email_taken(email)
+def register(nick, email, password, con):
+    is_taken = is_email_taken(email, con)
     if is_taken:
         return None
 
-    User(nick=nick, email=email, password=password).insert()
+    User(nick=nick, email=email, password=password).insert(con)
 
 
-def login(email, password):
-    query = "SELECT TOKEN FROM tokens WHERE EMAIL=? AND PASSWORD=?"
-    return sql.connect("users").execute(query, (email, password)).fetchone()
+def login(email, password, con):
+    query_get_user = "SELECT * FROM users WHERE EMAIL=? AND PASSWORD=?"
+    user_data = con.execute(query_get_user, (email, password)).fetchone()
+
+    print(user_data)
+    user = User.from_tuple(user_data)
+    if user is None:
+        return None
+
+    user.token = uuid.uuid4().hex
+    user.update(con)
+    return user.token
 
 
-def is_email_taken(email):
-    query = "SELECT COUNT(ID) FROM users WHERE EMAIL=?"
-    count = sql.connect("users").execute(query, (email,)).fetchmany()
-    return count != 0
+def is_email_taken(email, con):
+    query = "SELECT * FROM users WHERE EMAIL=?"
+    user = con.execute(query, (email,)).fetchone()
+    return user is not None
 
 
-def submit_solution(user_id: uuid.UUID, challenge_id: uuid.UUID, content: str):
-    pass
+def submit_solution(user_id: str, challenge_id: str, text: str, con):
+    Submission(user_id=user_id, challenge_id=challenge_id, posting_iso=datetime.now(), text=text).insert(con)
