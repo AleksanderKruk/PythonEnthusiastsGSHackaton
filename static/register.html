@@ -11,9 +11,9 @@
 <div class="login-page">
   <div class="form">
     <form id="login" class="login-form" method="post">
-      <input type="text" placeholder="email" name="email"/>
-      <input type="text" placeholder="username" name="username"/>
-      <input type="password" placeholder="password" name="password"/>
+      <input type="text" placeholder="email" name="email" id="email" required minlength="1"/>
+      <input type="text" placeholder="username" name="username" id="name" required minlength="1"/>
+      <input type="password" placeholder="password" name="password" id="pass" required minlength="1"/>
       <button type="submit">Register</button>
       <p class="message">Already a user? <a href="/login">Log in</a></p>
     </form>
@@ -21,6 +21,15 @@
 </div>
 <!-- partial -->
   <script  src="static/script.js"></script>
+
+  <script>
+    var fname = document.getElementById("email");
+    fname.addEventListener("input", () => {
+      if (fnamemaile.validity.tooShort || fname.validity.valueMissing) {
+        fname.reportValidity();
+      } else { fname.setCustomValidity(""); }
+    });
+    </script>
 
 </body>
 </html>
