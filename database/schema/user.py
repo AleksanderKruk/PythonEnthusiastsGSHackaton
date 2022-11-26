@@ -40,6 +40,7 @@ class User(BaseModel):
     def delete(self, con):
         query = "DELETE FROM users WHERE ID=?;"
 
+
         con.execute(query, (self.id,))
 
     def update(self, con):
@@ -48,4 +49,15 @@ class User(BaseModel):
                 "WHERE ID=?"
         values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number, self.token)
         params = values + (self.id,)
+
         con.execute(query, params)
+
+    def buy_gadget(self, gadgets_id):
+        gadget_being_bought = sql.connect("database\gs.db").execute("SELECT * FROM gadgets WHERE id = ?;", (gadgets_id,)).fetchall()
+        price = gadget_being_bought.point_price
+        difference = self.points - price
+        if difference >= 0:
+            self.points = difference
+            self.update()
+        else:
+            pass
