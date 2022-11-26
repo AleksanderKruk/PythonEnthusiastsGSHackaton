@@ -1,48 +1,56 @@
 from pydantic import BaseModel
 import uuid
-from badge import Badge
 import sqlite3 as sql
 
-class user(BaseModel):
-    def __init__(
-            self,
-            nick: str,
-            email: str,
-            password: str,
-            points: int = 0,
-            address: str = None,
-            phone_number: str = None,
-            id: uuid.UUID = None,
-    ):
-        self.id = id or uuid.uuid4()
-        self.nick = nick
-        self.email = email
-        self.password = password
-        self.points = points
-        self.address = address
-        self.phone_number = phone_number
 
-    def insert(self):
+class User(BaseModel):
+    id: str = uuid.uuid4().hex
+    nick: str
+    email: str
+    password: str
+    points: int = 0
+    token: str = None
+    address: str = None
+    phone_number: str = None
+
+    @staticmethod
+    def from_tuple(tup):
+        return User(
+            id=tup[0],
+            nick=tup[1],
+            email=tup[2],
+            password=tup[3],
+            points=tup[4],
+            token=tup[5],
+            address=tup[6],
+            phone_number=tup[7],
+        )
+
+    def insert(self, con):
         query = "INSERT INTO " \
-                "users (ID, NICK, EMAIL, PASSWORD, POINTS, ADDRESS, PHONE_NUMBER)" \
-                "VALUES(?, ?, ?, ?, ?, ?, ?);"
+                "users (ID, NICK, EMAIL, PASSWORD, POINTS, ADDRESS, PHONE_NUMBER, TOKEN)" \
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
 
-        values = (self.id, self.nick, self.email, self.password, self.points, self.address, self.phone_number)
+        values = (
+            self.id, self.nick, self.email, self.password, self.points, self.address, self.phone_number, self.token
+        )
 
-        sql.connect("database\gs.db").execute(query, values)
+        con.execute(query, values)
 
-    def delete(self):
+    def delete(self, con):
         query = "DELETE FROM users WHERE ID=?;"
 
-        sql.connect("database\gs.db").execute(query, (self.id,))
 
-    def update(self):
+        con.execute(query, (self.id,))
+
+    def update(self, con):
         query = "UPDATE users SET " \
-                "NICK=?, EMAIL=?, PASSWORD=?, POINTS=?, ADDRESS=?, PHONE_NUMBER=?" \
+                "NICK=?, EMAIL=?, PASSWORD=?, POINTS=?, ADDRESS=?, PHONE_NUMBER=?, TOKEN=?" \
                 "WHERE ID=?"
-        values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number)
+        values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number, self.token)
         params = values + (self.id,)
-        sql.connect("database\gs.db").execute(query, params)
+
+        con.execute(query, params)
 
     def buy_gadget(self, gadgets_id):
         gadget_being_bought = sql.connect("database\gs.db").execute("SELECT * FROM gadgets WHERE id = ?;", (gadgets_id,)).fetchall()
@@ -53,5 +61,3 @@ class user(BaseModel):
             self.update()
         else:
             pass
-
-
