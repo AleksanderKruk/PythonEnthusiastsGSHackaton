@@ -34,7 +34,7 @@ class Gadgets:
             column2 += ','
         if column2 != '':
             column1 += ','
-        
+        cond = ''
         cond = f'WHERE {cond}' if condition is not None else ''
 
         return f'UPDATE GADGETS SET {column1} {column2} {column3} {column4} {cond}'

@@ -9,6 +9,8 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from database.schema.submission import Submission
+import database.schema.user as U
+from database.schema import queries
 
 app = FastAPI()
 conn = sql.connect('database/gs.db')
@@ -103,6 +105,27 @@ async def get_challenge(id: str, request: Request, submission=Form()):
 
     # wraca do home'a (z ewentualnym dodatkowym komunikatem
     return RedirectResponse('/home', status_code=303)
+
+@app.get('/leaderboard')
+async def get_leaderboard(request: Request):
+    users = queries.get_all(conn)
+    users = [
+            U.User(
+            id=tup[0],
+            nick=tup[1],
+            email=tup[2],
+            password=tup[3],
+            points=tup[4],
+            token=tup[7],
+            address=tup[5],
+            phone_number=tup[6],
+        ) for tup in users
+    ]
+    top_list = [ user for user, _ in zip(sorted(users, key=lambda user: user.points, reverse=True), range(10))]
+    return templates.TemplateResponse(
+            "leaderboard.html",
+            {"request": request, "id": id, "top_10": top_list}
+        )
 
 if __name__ == '__main__':
     try:
