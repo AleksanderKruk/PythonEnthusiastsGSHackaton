@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Leaderboard</title>
+  <link href="static/style_leaderboard.css" rel="stylesheet" />
+</head>
+<body><div >
+    <div ><h1 ><b >Leaderboard:</b></h1></b></div>
+<table class="center">
+    <tr>
+      <th>Placement:</th>
+      <th>Best users:</th>
+      <th>Scores:</th>
+    </tr>
+    {% set cnt = namespace(counter=1) %}
+    {% for user in top_10 %}
+
+    <tr>
+        <th>{{ cnt.counter }}</th>
+        <th>{{ user.nick }}</th>
+        <th>{{ user.points }}</th>
+    </tr>
+    {% set cnt.counter = (cnt.counter + 1) %}
+    {% endfor %}
+    <div id="rectangle"></div>
+
+
+  </table>
+</div>
+</body>
+</html>

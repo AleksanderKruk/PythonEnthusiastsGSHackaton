@@ -1,9 +1,8 @@
 from sqlite3 import connect
 import database.schema.gadget as GD
 import uuid
-def get_all(table_name, con):
-    return con.execute("SELECT * FROM ?;", (table_name,)).fetchall()
-
+def get_all(con):
+    return con.execute("SELECT * FROM users;").fetchall()
 
 def buy_gadget(user, gadgets_id, con):
     gadget_being_bought = con.execute("SELECT * FROM gadgets WHERE id = ?;", (gadgets_id,)).fetchone()
