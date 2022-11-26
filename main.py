@@ -4,15 +4,19 @@ from database import user_utility
 from fastapi import FastAPI, Form
 from fastapi.requests import Request
 from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Form
+from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 conn = sql.connect('database/gs.db')
 
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="static")
+
 
 
 @app.get('/')
@@ -25,8 +29,10 @@ async def get_login(request: Request):
     return templates.TemplateResponse('login.html', {'request': request, 'id': id})
 
 
+
 @app.post('/login')
 async def post_login(email=Form(), password=Form()):
+
     res = user_utility.login(email, password, conn)
     if res is None:
         RedirectResponse('/login', status_code=401)

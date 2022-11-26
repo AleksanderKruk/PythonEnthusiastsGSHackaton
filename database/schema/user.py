@@ -48,4 +48,5 @@ class User(BaseModel):
                 "WHERE ID=?"
         values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number, self.token)
         params = values + (self.id,)
+
         con.execute(query, params)

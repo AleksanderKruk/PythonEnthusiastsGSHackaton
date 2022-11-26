@@ -21,24 +21,21 @@ class Challenge:
         self.content = content
         self.difficulty = difficulty
 
-    def insert(self, database):
-        database.execute(
+    def insert(self):
+        sql.connect("database\gs.db").execute(
             "INSERT INTO ?s (id, name, content, difficulty) VALUES(?, ?, ?, ?);",
             (self.__class__.__name__, self.id, self.name, self.content, self.difficulty.value)
         )
 
-    def delete(self, database, given_id):
-        database.execute(
-            "DELETE FROM ?s WHERE id = ?;", (self.__class__.__name__, given_id)
+    def delete(self):
+        sql.connect("database\gs.db").execute(
+            "DELETE FROM ?s WHERE id = ?;", (self.__class__.__name__, self.id)
         )
 
-    def update(self, database, given_id, new_name, new_content, new_difficulty):
-        new_name = self.name if new_name is None else new_name
-        new_content = self.content if new_content is None else new_content
-        new_difficulty = self.difficulty if new_difficulty is None else new_difficulty
-        database.execute(
+    def update(self):
+        sql.connect("database\gs.db").execute(
             "UPDATE ?s SET name = ?, content = ?, difficulty = ?  WHERE id = ?;",
-            (self.__class__.__name__, new_name, new_content, new_difficulty, given_id)
+            (self.__class__.__name__, self.name, self.content, self.difficulty, self.id)
         )
 
 
