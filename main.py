@@ -1,6 +1,6 @@
 from uvicorn import run
 import sqlite3 as sql
-import user_utility
+from database import user_utility
 from fastapi import FastAPI, Form
 from fastapi.requests import Request
 from fastapi.responses import RedirectResponse
