@@ -2,6 +2,7 @@ from pydantic import BaseModel
 import uuid
 from badge import Badge
 import sqlite3 as sql
+from secrets import token_hex
 
 
 class user(BaseModel):
@@ -44,3 +45,14 @@ class user(BaseModel):
         values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number)
         params = values + (self.id,)
         sql.connect("users").execute(query, params)
+
+
+    def token(self):
+        query = 'UPDATE users SET token=? WHERE id=?'
+        token = token_hex(32)
+        conn = sql.connect('gs.db')
+        conn.execute(query, (token, self.id))
+        conn.commit()
+
+        
+
