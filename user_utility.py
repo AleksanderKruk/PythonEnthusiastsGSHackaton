@@ -1,5 +1,6 @@
 from database.schema.user import User
 import sqlite3 as sql
+import uuid
 
 
 def register(nick, email, password):
@@ -19,3 +20,7 @@ def is_email_taken(email):
     query = "SELECT COUNT(ID) FROM users WHERE EMAIL=?"
     count = sql.connect("users").execute(query, (email,)).fetchmany()
     return count != 0
+
+
+def submit_solution(user_id: uuid.UUID, challenge_id: uuid.UUID, content: str):
+    pass
