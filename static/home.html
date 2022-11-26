@@ -10,6 +10,9 @@
 <!-- partial:index.partial.html -->
 <div class="home-page">
    <h1>Welcome to our page</h1>
+       {% for i in content %}
+        <div>{{ i }}</div>
+    {% endfor %}
 </div>
 <!-- partial -->
   <script  src="static/script.js"></script>
