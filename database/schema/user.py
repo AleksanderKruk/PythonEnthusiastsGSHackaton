@@ -3,7 +3,6 @@ import uuid
 from badge import Badge
 import sqlite3 as sql
 
-
 class user(BaseModel):
     def __init__(
             self,
@@ -30,12 +29,12 @@ class user(BaseModel):
 
         values = (self.id, self.nick, self.email, self.password, self.points, self.address, self.phone_number)
 
-        sql.connect("users").execute(query, values)
+        sql.connect("database\gs.db").execute(query, values)
 
     def delete(self):
         query = "DELETE FROM users WHERE ID=?;"
 
-        sql.connect("users").execute(query, (self.id,))
+        sql.connect("database\gs.db").execute(query, (self.id,))
 
     def update(self):
         query = "UPDATE users SET " \
@@ -43,4 +42,16 @@ class user(BaseModel):
                 "WHERE ID=?"
         values = (self.nick, self.email, self.password, self.points, self.address, self.phone_number)
         params = values + (self.id,)
-        sql.connect("users").execute(query, params)
+        sql.connect("database\gs.db").execute(query, params)
+
+    def buy_gadget(self, gadgets_id):
+        gadget_being_bought = sql.connect("database\gs.db").execute("SELECT * FROM gadgets WHERE id = ?;", (gadgets_id,)).fetchall()
+        price = gadget_being_bought.point_price
+        difference = self.points - price
+        if difference >= 0:
+            self.points = difference
+            self.update()
+        else:
+            pass
+
+
