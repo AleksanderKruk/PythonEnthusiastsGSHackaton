@@ -3,30 +3,24 @@ import uuid
 import datetime
 import sqlite3 as sql
 
+db_path = '../gs.db'
 
-class Submissions(BaseModel):
-    def __int__(
-            self,
-            user_id: uuid.UUID,
-            challenges_id: uuid.UUID,
-            posting_iso: datetime.datetime,
-            content: str,
-            id: uuid.UUID = None,
-    ):
-        self.id = id or uuid.uuid4()
-        self.user_id: uuid.UUID = user_id
-        self.challenges_id = challenges_id
-        self.posting_iso = posting_iso
-        self.content = content
 
-    def insert(self):
+class Submission(BaseModel):
+    id: str = uuid.uuid4().hex
+    user_id: str
+    challenge_id: str
+    posting_iso: datetime.datetime
+    text: str
+
+    def insert(self, con):
         query = "INSERT INTO " \
-                "submissions (ID, USER_ID, CHALLANGES_ID, POSTING_ISO, CONTENT)" \
+                "submissions (ID, USER_ID, CHALLENGE_ID, POSTING_ISO, TEXT)" \
                 "VALUES(?, ?, ?, ?, ?);"
-        values = (self.id, self.user_id, self.challenges_id, self.posting_iso, self.content)
-        sql.connect("submissions").execute(query, values)
+        values = (self.id, self.user_id, self.challenge_id, self.posting_iso, self.text)
+        con.execute(query, values)
 
-    def delete(self):
+    def delete(self, con):
         query = "DELETE FROM submissions WHERE ID=?;"
 
-        sql.connect("submissions").execute(query, (self.id,))
+        con.execute(query, (self.id,))
