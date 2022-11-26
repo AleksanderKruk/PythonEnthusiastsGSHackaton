@@ -1,5 +1,5 @@
-from database.schema.user import User
-from database.schema.submission import Submission
+from schema.user import User
+from schema.submission import Submission
 from datetime import datetime
 import uuid
 
@@ -16,7 +16,6 @@ def login(email, password, con):
     query_get_user = "SELECT * FROM users WHERE EMAIL=? AND PASSWORD=?"
     user_data = con.execute(query_get_user, (email, password)).fetchone()
 
-    print(user_data)
     user = User.from_tuple(user_data)
     if user is None:
         return None
